@@ -8,10 +8,11 @@ import AboutScreen from './components/reviews/about';
 import { POPPINS_REGULAR } from './utils/const';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RootStackParamList } from './types/route';
 
 SplashScreen.preventAutoHideAsync();
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
     const [fontsLoaded] = useFonts({
@@ -28,9 +29,9 @@ const App = () => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
+            <Stack.Navigator initialRouteName="home">
                 <Stack.Screen name="home" options={{ title: 'Trang chủ' }} component={HomeScreen} />
-                <Stack.Screen name="preview-detail" component={DetailScreen} />
+                <Stack.Screen name="preview-detail" options={{ title: 'Chi tiết review' }} component={DetailScreen} />
                 <Stack.Screen name="about" component={AboutScreen} />
             </Stack.Navigator>
         </NavigationContainer>
