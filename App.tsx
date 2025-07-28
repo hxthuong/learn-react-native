@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface ITodo {
     id: number;
@@ -15,9 +15,17 @@ export default function App() {
     }
 
     const handleAddTodo = () => {
-        if (!todo) return;
+        if (!todo) {
+            alert('empty todo');
+            return;
+        }
         setListTodo([...listTodo, { id: randomInt(2, 100), name: todo }]);
         setTodo('');
+    };
+
+    const handleDeleteTodo = (id: number) => {
+        const newTodos = listTodo.filter((item) => item.id !== id);
+        setListTodo(newTodos);
     };
 
     return (
@@ -37,7 +45,15 @@ export default function App() {
                     data={listTodo}
                     keyExtractor={(item) => `${item.id}`}
                     renderItem={({ item }) => {
-                        return <Text style={styles.todoItem}>{item.name}</Text>;
+                        return (
+                            <Pressable
+                                style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+                                // style={({ pressed }) => (pressed ? styles.todoItem_hover : null)}
+                                onPress={() => handleDeleteTodo(item.id)}
+                            >
+                                <Text style={styles.todoItem}>{item.name}</Text>
+                            </Pressable>
+                        );
                     }}
                 />
             </View>
@@ -49,6 +65,7 @@ const styles = StyleSheet.create({
     header: {
         backgroundColor: 'wheat',
         paddingHorizontal: 20,
+        paddingVertical: 10,
         textAlign: 'center',
         fontSize: 40,
         fontWeight: '800',
@@ -75,4 +92,7 @@ const styles = StyleSheet.create({
         borderStyle: 'dashed',
         padding: 10,
     },
+    // todoItem_hover: {
+    //     opacity: 0.5,
+    // },
 });
