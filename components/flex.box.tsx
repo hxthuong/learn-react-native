@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
+// import AntDesign from '@expo/vector-icons/AntDesign';
 
 const FlexBox = () => {
     return (
         <View style={styles.container}>
             <View style={[styles.item, styles.item1]}>
-                <Text>item 1</Text>
+                <View>
+                    <Text>item 1</Text>
+                </View>
             </View>
             <View style={[styles.item, styles.item2]}>
                 <Text>item 2</Text>

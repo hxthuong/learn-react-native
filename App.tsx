@@ -11,7 +11,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from 'react-native';
-import FlexBox from './components/flex.box';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 interface ITodo {
     id: number;
@@ -40,73 +40,80 @@ export default function App() {
     };
 
     return (
-        <FlexBox />
-        // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        //     <View style={styles.container}>
-        //         {/* header */}
-        //         <Text style={styles.header}>Todo App</Text>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.container}>
+                {/* header */}
+                <Text style={styles.header}>Todo App</Text>
 
-        //         {/* form  */}
-        //         <View style={styles.body}>
-        //             <TextInput style={styles.todoInput} value={todo} onChangeText={setTodo} placeholder="Input todo" />
-        //             <Button title="Add todo" onPress={handleAddTodo} />
-        //         </View>
-        //         {/* list todo */}
-        //         <View style={styles.body}>
-        //             {/* <Text>{JSON.stringify(listTodo)}</Text> */}
-        //             <FlatList
-        //                 data={listTodo}
-        //                 keyExtractor={(item) => `${item.id}`}
-        //                 renderItem={({ item }) => {
-        //                     return (
-        //                         <Pressable
-        //                             style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
-        //                             // style={({ pressed }) => (pressed ? styles.todoItem_hover : null)}
-        //                             onPress={() => handleDeleteTodo(item.id)}
-        //                         >
-        //                             <Text style={styles.todoItem}>{item.name}</Text>
-        //                         </Pressable>
-        //                     );
-        //                 }}
-        //             />
-        //         </View>
-        //     </View>
-        // </TouchableWithoutFeedback>
+                {/* form  */}
+                <View style={styles.form}>
+                    <TextInput style={styles.todoInput} value={todo} onChangeText={setTodo} placeholder="Input todo" />
+                    <Button title="Add todo" onPress={handleAddTodo} />
+                </View>
+                {/* list todo */}
+                <View style={styles.todo}>
+                    {/* <Text>{JSON.stringify(listTodo)}</Text> */}
+                    <FlatList
+                        data={listTodo}
+                        keyExtractor={(item) => `${item.id}`}
+                        renderItem={({ item }) => {
+                            return (
+                                <Pressable
+                                    style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+                                    // style={({ pressed }) => (pressed ? styles.todoItem_hover : null)}
+                                    onPress={() => handleDeleteTodo(item.id)}
+                                >
+                                    <View style={styles.groupTodo}>
+                                        <Text style={styles.todoItem}>{item.name}</Text>
+                                        <AntDesign name="close" size={24} color={'red'} />
+                                    </View>
+                                </Pressable>
+                            );
+                        }}
+                    />
+                </View>
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: 'wheat',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        textAlign: 'center',
-        fontSize: 40,
-        fontWeight: '800',
-    },
     container: {
         paddingTop: 50,
         flex: 1,
         backgroundColor: 'white',
     },
+    header: {
+        backgroundColor: 'wheat',
+        paddingHorizontal: 20,
+        textAlign: 'center',
+        fontSize: 40,
+        fontWeight: '800',
+    },
+    form: {
+        // marginBottom: 20,
+        margin: 10,
+    },
     todoInput: {
         borderBottomWidth: 1,
         borderBottomColor: 'green',
         padding: 5,
-        margin: 15,
+        marginBottom: 10,
     },
-    body: {
-        paddingHorizontal: 15,
+    todo: {
+        flex: 1,
+    },
+    groupTodo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         marginBottom: 20,
+        marginHorizontal: 10,
+        padding: 15,
+        borderWidth: 1,
+        borderStyle: 'dashed',
     },
     todoItem: {
         fontSize: 14,
-        marginBottom: 20,
-        borderWidth: 1,
-        borderStyle: 'dashed',
-        padding: 10,
     },
-    // todoItem_hover: {
-    //     opacity: 0.5,
-    // },
 });
