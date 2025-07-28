@@ -1,81 +1,35 @@
-import { useState } from 'react';
-import {
-    Alert,
-    Button,
-    FlatList,
-    Keyboard,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableWithoutFeedback,
-    View,
-} from 'react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { StyleSheet, View } from 'react-native';
+import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import HomeScreen from './components/reviews/home';
+import DetailScreen from './components/reviews/detail';
+import AboutScreen from './components/reviews/about';
+import { POPPINS_REGULAR } from './utils/const';
 
-interface ITodo {
-    id: number;
-    name: string;
-}
+SplashScreen.preventAutoHideAsync();
 
-export default function App() {
-    const [todo, setTodo] = useState('');
-    const [listTodo, setListTodo] = useState<ITodo[]>([]);
-    function randomInt(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+const App = () => {
+    const [fontsLoaded] = useFonts({
+        [POPPINS_REGULAR]: require('./assets/fonts/Poppins-Regular.ttf'),
+    });
 
-    const handleAddTodo = () => {
-        if (!todo) {
-            Alert.alert('Lỗi input todo', 'Todo không được để trống', [{ text: 'Xác nhận' }]);
-            return;
+    useEffect(() => {
+        if (fontsLoaded) {
+            SplashScreen.hideAsync();
         }
-        setListTodo([...listTodo, { id: randomInt(2, 100), name: todo }]);
-        setTodo('');
-    };
+    }, [fontsLoaded]);
 
-    const handleDeleteTodo = (id: number) => {
-        const newTodos = listTodo.filter((item) => item.id !== id);
-        setListTodo(newTodos);
-    };
+    if (!fontsLoaded) return null;
 
     return (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={styles.container}>
-                {/* header */}
-                <Text style={styles.header}>Todo App</Text>
-
-                {/* form  */}
-                <View style={styles.form}>
-                    <TextInput style={styles.todoInput} value={todo} onChangeText={setTodo} placeholder="Input todo" />
-                    <Button title="Add todo" onPress={handleAddTodo} />
-                </View>
-                {/* list todo */}
-                <View style={styles.todo}>
-                    {/* <Text>{JSON.stringify(listTodo)}</Text> */}
-                    <FlatList
-                        data={listTodo}
-                        keyExtractor={(item) => `${item.id}`}
-                        renderItem={({ item }) => {
-                            return (
-                                <Pressable
-                                    style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
-                                    // style={({ pressed }) => (pressed ? styles.todoItem_hover : null)}
-                                    onPress={() => handleDeleteTodo(item.id)}
-                                >
-                                    <View style={styles.groupTodo}>
-                                        <Text style={styles.todoItem}>{item.name}</Text>
-                                        <AntDesign name="close" size={24} color={'red'} />
-                                    </View>
-                                </Pressable>
-                            );
-                        }}
-                    />
-                </View>
-            </View>
-        </TouchableWithoutFeedback>
+        <View style={styles.container}>
+            <HomeScreen />
+            <DetailScreen />
+            <AboutScreen />
+        </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -83,37 +37,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    header: {
-        backgroundColor: 'wheat',
-        paddingHorizontal: 20,
-        textAlign: 'center',
-        fontSize: 40,
-        fontWeight: '800',
-    },
-    form: {
-        // marginBottom: 20,
-        margin: 10,
-    },
-    todoInput: {
-        borderBottomWidth: 1,
-        borderBottomColor: 'green',
-        padding: 5,
-        marginBottom: 10,
-    },
-    todo: {
-        flex: 1,
-    },
-    groupTodo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        marginHorizontal: 10,
-        padding: 15,
-        borderWidth: 1,
-        borderStyle: 'dashed',
-    },
-    todoItem: {
-        fontSize: 14,
-    },
 });
+
+export default App;
