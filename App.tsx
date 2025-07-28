@@ -1,81 +1,78 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+
+interface ITodo {
+    id: number;
+    name: string;
+}
 
 export default function App() {
-    const [students, setStudents] = useState([
-        { id: 1, name: 'A', age: 10 },
-        { id: 2, name: 'B', age: 11 },
-        { id: 3, name: 'C', age: 12 },
-        { id: 4, name: 'D', age: 13 },
-        { id: 5, name: 'E', age: 14 },
-        { id: 6, name: 'F', age: 15 },
-        { id: 7, name: 'G', age: 10 },
-        { id: 8, name: 'H', age: 11 },
-        { id: 9, name: 'I', age: 12 },
-        { id: 10, name: 'K', age: 13 },
-        { id: 11, name: 'L', age: 14 },
-        { id: 12, name: 'M', age: 15 },
-    ]);
+    const [todo, setTodo] = useState('');
+    const [listTodo, setListTodo] = useState<ITodo[]>([]);
+    function randomInt(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const handleAddTodo = () => {
+        if (!todo) return;
+        setListTodo([...listTodo, { id: randomInt(2, 100), name: todo }]);
+        setTodo('');
+    };
 
     return (
-        // <View style={styles.container}>
-        //     <Text style={styles.header}>Students</Text>
-        // </View>
         <View style={styles.container}>
-            <Text style={styles.header}>Students</Text>
-            <FlatList
-                data={students}
-                keyExtractor={(item) => `${item.id}`}
-                // numColumns={2}
-                renderItem={({ item }) => {
-                    return (
-                        <View>
-                            <Text style={styles.item}>
-                                STT: {item.id} - Tên: {item.name}
-                            </Text>
-                        </View>
-                    );
-                }}
-            />
+            {/* header */}
+            <Text style={styles.header}>Todo App</Text>
+
+            {/* form  */}
+            <View style={styles.body}>
+                <TextInput style={styles.todoInput} value={todo} onChangeText={setTodo} placeholder="Input todo" />
+                <Button title="Add todo" onPress={handleAddTodo} />
+            </View>
+            {/* list todo */}
+            <View style={styles.body}>
+                {/* <Text>{JSON.stringify(listTodo)}</Text> */}
+                <FlatList
+                    data={listTodo}
+                    keyExtractor={(item) => `${item.id}`}
+                    renderItem={({ item }) => {
+                        return <Text style={styles.todoItem}>{item.name}</Text>;
+                    }}
+                />
+            </View>
         </View>
-        // <ScrollView style={styles.container}>
-        //     <Text style={styles.header}>Students</Text>
-        //     {students.map((item) => (
-        //         <Text style={styles.item} key={item.id}>
-        //             STT: {item.id} - Tên: {item.name}
-        //         </Text>
-        //     ))}
-        // </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-    },
     header: {
-        fontSize: 30,
-        fontWeight: '800',
-        marginVertical: 30,
+        backgroundColor: 'wheat',
+        paddingHorizontal: 20,
         textAlign: 'center',
-    },
-    input: {
-        width: 320,
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-    },
-    item: {
-        // width: '100%',
-        backgroundColor: 'lightblue',
-        padding: 30,
-        marginBottom: 30,
-        marginHorizontal: 20,
+        fontSize: 40,
         fontWeight: '800',
+    },
+    container: {
+        paddingTop: 50,
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    todoInput: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'green',
+        padding: 5,
+        margin: 15,
+    },
+    body: {
+        paddingHorizontal: 15,
+        marginBottom: 20,
+    },
+    todoItem: {
+        fontSize: 14,
+        marginBottom: 20,
+        borderWidth: 1,
+        borderStyle: 'dashed',
+        padding: 10,
     },
 });
