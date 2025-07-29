@@ -18,15 +18,12 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         backgroundColor: '#ccc',
-        paddingHorizontal: 5,
-        paddingVertical: 10,
+        padding: 10,
         alignItems: 'center',
-        paddingTop: 40,
     },
     headerText: {
-        marginLeft: 0,
+        flex: 1,
         textAlign: 'center',
-        width: '100%',
         fontSize: 20,
         fontWeight: 800,
     },
