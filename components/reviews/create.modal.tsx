@@ -1,14 +1,44 @@
-import { Button, Modal, StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, Modal, StyleSheet, Text, View } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { TextInput } from 'react-native-gesture-handler';
+import { useState } from 'react';
 
 interface IProps {
     modalVisible: boolean;
     setModalVisible: (v: boolean) => void;
+    addNew: any;
 }
 
 const CreateModal = (props: IProps) => {
-    const { modalVisible, setModalVisible } = props;
+    const { modalVisible, setModalVisible, addNew } = props;
+    const [title, setTitle] = useState('');
+    const [star, setStar] = useState('');
+
+    const randomId = (max: number, min: number) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    const handleSubmit = () => {
+        if (!title) {
+            Alert.alert('Thông tin không hợp lệ', 'Nội dung không được để trống!');
+            return;
+        }
+
+        if (!star) {
+            Alert.alert('Thông tin không hợp lệ', 'Rating không được để trống!');
+            return;
+        }
+
+        addNew({
+            id: randomId(2, 10000),
+            title: title,
+            star: Number(star) || 0,
+        });
+
+        setModalVisible(false);
+        setStar('');
+        setTitle('');
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -17,22 +47,36 @@ const CreateModal = (props: IProps) => {
                     {/* header */}
                     <View style={styles.header}>
                         <Text style={{ fontSize: 24, fontWeight: '600' }}>Create a review</Text>
-                        <AntDesign name="close" size={24} color="black" onPress={() => setModalVisible(false)} />
+                        <AntDesign
+                            name="close"
+                            size={24}
+                            color="black"
+                            onPress={() => {
+                                setModalVisible(false);
+                                setStar('');
+                                setTitle('');
+                            }}
+                        />
                     </View>
                     {/* body */}
                     <View>
                         <View style={styles.groupInput}>
                             <Text style={styles.text}>Nội dung</Text>
-                            <TextInput style={styles.input} />
+                            <TextInput style={styles.input} value={title} onChangeText={setTitle} />
                         </View>
                         <View style={styles.groupInput}>
                             <Text style={styles.text}>Rating</Text>
-                            <TextInput style={styles.input} keyboardType="numeric" />
+                            <TextInput
+                                style={styles.input}
+                                keyboardType="numeric"
+                                value={star}
+                                onChangeText={setStar}
+                            />
                         </View>
                     </View>
                     {/* footer */}
                     <View style={{ marginTop: 5 }}>
-                        <Button title="Add" />
+                        <Button title="Add" onPress={handleSubmit} />
                     </View>
                     {/* <Pressable
                         style={[styles.button, styles.buttonClose]}
