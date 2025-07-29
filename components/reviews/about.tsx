@@ -4,7 +4,8 @@ import { globalStyles } from '../../utils/const';
 const AboutScreen = () => {
     return (
         <View>
-            <Text style={[styles.about, globalStyles.appFont]}>Aboutscreen page</Text>
+            <Text style={[styles.about, globalStyles.appFont]}>About Review App</Text>
+            <Text style={[styles.about, globalStyles.appFont]}>Made by hoidanit</Text>
         </View>
     );
 };
@@ -12,6 +13,7 @@ const AboutScreen = () => {
 const styles = StyleSheet.create({
     about: {
         marginBottom: 30,
+        fontSize: 30,
     },
 });
 

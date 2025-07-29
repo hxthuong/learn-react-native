@@ -1,8 +1,8 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { globalStyles, POPPINS_REGULAR } from '../../utils/const';
 import { NavigationProp, useNavigation, RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../types/route';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
 const DetailScreen = () => {
     const navigation: NavigationProp<RootStackParamList> = useNavigation();
