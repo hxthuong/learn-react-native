@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { POPPINS_REGULAR } from './utils/const';
+import { OPENSANS_REGULAR } from './utils/const';
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import AppNavigation from './components/navigation/app.navigation';
@@ -16,7 +16,7 @@ import AppNavigation from './components/navigation/app.navigation';
 SplashScreen.preventAutoHideAsync();
 const App = () => {
     const [fontsLoaded] = useFonts({
-        [POPPINS_REGULAR]: require('./assets/fonts/Poppins-Regular.ttf'),
+        [OPENSANS_REGULAR]: require('./assets/fonts/OpenSans-Regular.ttf'),
         ...AntDesign.font,
     });
 

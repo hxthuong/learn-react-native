@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../../types/route';
+import AppHeader from '../navigation/app.header';
 
 interface IReview {
     id: number;
